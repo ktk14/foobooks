@@ -24,13 +24,14 @@ class BookController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
+    {/*
         $view  = '<form method="POST" action="/books/create">';
         $view .= csrf_field(); # This will be explained more later
         $view .= '<label>Title: <input type="text" name="title"></label>';
         $view .= '<input type="submit">';
         $view .= '</form>';
         return $view;
+        */
     }
 
     /**

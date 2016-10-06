@@ -42,7 +42,7 @@ Route::delete('/books/{book}', 'BookController@destroy')->name('books.destroy');
  /**
  * Contact page
  * Single action controller that contains a __invoke method no action is specified
- * This page could also be taken care of via the PageController, it's up to you.
+ * This page could also be taken care of via the PageController
  */
  Route::get('/contact', 'ContactController')->name('contact');
 /**
