@@ -1,11 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-
 class BookController extends Controller
 {
     /**
@@ -15,25 +11,17 @@ class BookController extends Controller
      */
     public function index()
     {
-        return 'All the books!';
+        return 'Hi from the book controller!';
     }
-
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {/*
-        $view  = '<form method="POST" action="/books/create">';
-        $view .= csrf_field(); # This will be explained more later
-        $view .= '<label>Title: <input type="text" name="title"></label>';
-        $view .= '<input type="submit">';
-        $view .= '</form>';
-        return $view;
-        */
+    {
+        //
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -44,18 +32,16 @@ class BookController extends Controller
     {
         //
     }
-
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($title)
     {
-        //
+        return view('book.show')->with('title', $title);
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -66,7 +52,6 @@ class BookController extends Controller
     {
         //
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -78,7 +63,6 @@ class BookController extends Controller
     {
         //
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -89,4 +73,4 @@ class BookController extends Controller
     {
         //
     }
-} #end of class
+}
