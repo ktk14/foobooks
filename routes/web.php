@@ -45,16 +45,17 @@ Route::delete('/books/{title}', 'BookController@destroy')->name('books.destroy')
  * This page could also be taken care of via the PageController
  */
  Route::get('/contact', 'ContactController')->name('contact');
+
+
+/*Practice page  A quick and dirty way to set up a whole bunch of practice routes
+* that I'll use in lecture. makes 100 localhost/practice/1, practice/2, etc.s*/
+Route::get('/practice', 'PracticeController@index')->name('practice.index');
+for($i = 0; $i < 100; $i++) {
+    Route::get('/practice/'.$i, 'PracticeController@example'.$i)->name('practice.example'.$i);
+}
 /*
 * Main homepage
 */
 Route::get('/', function () {
     return view('welcome');
 });
-
-/*Practice page  A quick and dirty way to set up a whole bunch of practice routes
-* that I'll use in lecture. makes 100 localhost/practice/1, practice/2, etc.s*/
-Route::get('/practice', 'PracticeController@index')->('practice.index');
-for($i = 0; $i < 100; $i++) {
-    Route::get('/practice/'.$i, 'PracticeController@example'.$i)->name('practice.example'.$i);
-};
