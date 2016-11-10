@@ -72,7 +72,24 @@ Route::get('/', function () {
 });
 
 
+/**
+* ref: https://github.com/susanBuck/dwa15-fall2016-notes/blob/master/03_Laravel/21_Schemas_and_Migrations.md#starting-overyour-first-migrations
+*/
+if(App::environment('local')) {
 
+    Route::get('/drop', function() {
+
+        DB::statement('DROP database foobooks');
+        DB::statement('CREATE database foobooks');
+
+        return 'Dropped foobooks; created foobooks.';
+    });
+
+};
+
+/**
+* ref: https://github.com/susanBuck/dwa15-fall2016-notes/blob/master/03_Laravel/19_Local_Database_Setup.md#test-your-connection
+*/
 Route::get('/debug', function() {
 
 	echo '<pre>';
