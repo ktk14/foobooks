@@ -16,10 +16,10 @@ Route::post('/books', 'BookController@store')->name('books.store');
 Route::get('/books/{title}', 'BookController@show')->name('books.show');
 
 # Show form to edit a book
-Route::get('/books/{title}/edit', 'BookController@edit')->name('books.edit');
+Route::get('/books/{id}/edit', 'BookController@edit')->name('books.edit');
 
 # Process form to edit a book
-Route::put('/books/{title}', 'BookController@update')->name('books.update');
+Route::put('/books/{id}', 'BookController@update')->name('books.update');
 
 # Delete a book
 Route::delete('/books/{title}', 'BookController@destroy')->name('books.destroy');
@@ -61,16 +61,6 @@ for($i = 0; $i < 100; $i++) {
 if(App::environment() == 'local') {
     Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 }
-
-
-
-/**
-* Main homepage
-*/
-Route::get('/', function () {
-    return view('welcome');
-});
-
 
 /**
 * ref: https://github.com/susanBuck/dwa15-fall2016-notes/blob/master/03_Laravel/21_Schemas_and_Migrations.md#starting-overyour-first-migrations
@@ -124,14 +114,14 @@ Route::get('/debug', function() {
 	echo '</pre>';
 
 });
-if(App::environment('local')) {
 
-    Route::get('/drop', function() {
 
-        DB::statement('DROP database foobooks');
-        DB::statement('CREATE database foobooks');
-
-        return 'Dropped foobooks; created foobooks.';
-    });
-
-};
+/**
+* Main homepage
+*/
+# Old: Dedicated view for the homepage
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+# New as of Lecture 11, just use the "book index" as the homepage
+Route::get('/', 'BookController@index');
