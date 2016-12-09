@@ -9,15 +9,88 @@ use App\Utilities\Quote;
 use Carbon;
 use DB;
 use App\Book;
+use App\Author;
+use App\Tag;
+use App\User;
 
 # Access via /practice/#
 
 class PracticeController extends Controller
 {
 
+    public function example21() {
+    $book = Book::first();
+    return view('practice.example21')->with(['book' => $book]);
+    }
+
+    //egar loading
+    public function example20() {
+        $books = Book::with('tags')->get();
+
+        foreach($books as $book) {
+            dump($book->title.' is tagged with: ');
+            foreach($book->tags as $tag) {
+                dump($tag->name);
+            }
+        }
+    }
+    public function example19() {
+        $book = Book::where('title', '=', 'The Great Gatsby')->first();
+
+        dump($book->title);
+
+        foreach($book->tags as $tag) {
+            dump($tag->name);
+        }
+    }
+    public function example18() {
+        # Eager load the author with the book requires relationship to work Faster
+        $books = Book::with('author')->get();
+
+        foreach($books as $book) {
+            echo $book->author->first_name.' '.$book->author->last_name.' wrote '.$book->title.'<br>';
+        }
+
+        dump($books->toArray())
+    }
+
+    public function example17() {
+        # Get the first book as an example
+        $book = Book::first();
+
+        # Get the author from this book using the "author" dynamic property used with relationships
+        # "author" corresponds to the the relationship method defined in the Book model
+        $author = $book->author;
+
+        # Output
+        dump($book->title.' was written by '.$author->first_name.' '.$author->last_name);
+        dump($book->toArray());
+    }
+
+    public function example16() {
+        # To do this, we'll first create a new author:
+        $author = new Author;
+        $author->first_name = 'J.K';
+        $author->last_name = 'Rowling';
+        $author->bio_url = 'https://en.wikipedia.org/wiki/J._K._Rowling';
+        $author->birth_year = '1965';
+        $author->save();
+        dump($author->toArray());
+
+        # Then we'll create a new book and associate it with the author:
+        $book = new Book;
+        $book->title = "Harry Potter and the Philosopher's Stone";
+        $book->published = 1997;
+        $book->cover = 'http://prodimage.images-bn.com/pimages/9781582348254_p0_v1_s118x184.jpg';
+        $book->purchase_link = 'http://www.barnesandnoble.com/w/harrius-potter-et-philosophi-lapis-j-k-rowling/1102662272?ean=9781582348254';
+        $book->author()->associate($author); # Associate the author with this book relate
+        $book->save();
+        dump($book->toArray());
+    }
+
     /**
-	* Demonstrating querying on the Collection rather than the DB
-	*/
+    * Demonstrating querying on the Collection rather than the DB
+    */
     public function example15() {
 
         /*
@@ -40,8 +113,8 @@ class PracticeController extends Controller
 
 
     /**
-	* Demonstrating magic methods of Collections
-	*/
+    * Demonstrating magic methods of Collections
+    */
     public function example14() {
 
         $books = Book::all();
@@ -103,8 +176,8 @@ class PracticeController extends Controller
 
 
     /**
-	* Get all the books via the Book model
-	*/
+    * Get all the books via the Book model
+    */
     public function example11() {
 
         $books = Book::all();

@@ -1,13 +1,22 @@
 <?php
 
+Route::get('/show-login-status', function() {
+    # You may access the authenticated user via the Auth facade
+    $user = Auth::user();
+    if($user)
+        dump($user->toArray());
+    else
+        dump('You are not logged in.');
+    return;
+});
 /**
 * Book resource
 */
 # Index page to show all the books
-Route::get('/books', 'BookController@index')->name('books.index');
+Route::get('/books', 'BookController@index')->name('books.index')->middleware('auth');
 
 # Show a form to create a new book
-Route::get('/books/create', 'BookController@create')->name('books.create');
+Route::get('/books/create', 'BookController@create')->name('books.create')->middleware('auth');
 
 # Process the form to create a new book
 Route::post('/books', 'BookController@store')->name('books.store');
@@ -21,8 +30,11 @@ Route::get('/books/{id}/edit', 'BookController@edit')->name('books.edit');
 # Process form to edit a book
 Route::put('/books/{id}', 'BookController@update')->name('books.update');
 
-# Delete a book
-Route::delete('/books/{title}', 'BookController@destroy')->name('books.destroy');
+# Get route to confirm deletion of book
+Route::get('/books/{id}/delete', 'BookController@delete')->name('books.destroy');
+
+# Delete route to actually destroy the book
+Route::delete('/books/{id}', 'BookController@destroy')->name('books.destroy');
 
 # The above routes *could* all be replaced with this one line:
 # Route::resource('books', 'BookController');
@@ -55,12 +67,13 @@ for($i = 0; $i < 100; $i++) {
 
 
 /**
-* Development related
+* View logs, only accessible locally
 */
 # Make it so the logs can only be seen locally
 if(App::environment() == 'local') {
-    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+    #Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 }
+
 
 /**
 * ref: https://github.com/susanBuck/dwa15-fall2016-notes/blob/master/03_Laravel/21_Schemas_and_Migrations.md#starting-overyour-first-migrations
@@ -76,6 +89,7 @@ if(App::environment('local')) {
     });
 
 };
+
 
 /**
 * ref: https://github.com/susanBuck/dwa15-fall2016-notes/blob/master/03_Laravel/19_Local_Database_Setup.md#test-your-connection
@@ -123,5 +137,10 @@ Route::get('/debug', function() {
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+
 # New as of Lecture 11, just use the "book index" as the homepage
-Route::get('/', 'BookController@index');
+Route::get('/', 'PageController@welcome');
+
+Auth::routes();
+Route::get('/logout','Auth\LoginController@logout')->name('logout');
+#Route::get('/home', 'HomeController@index');
